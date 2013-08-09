@@ -313,11 +313,11 @@ public class DrinkkiController {
        if (viesti.equals("ok")) {
                 String onnistunutViesti = "Kiitos ehdotuksesta!";
                 session.setAttribute("onnistunutViesti", onnistunutViesti);
-                return "redirect:ehdota-drinkki";
+                return "redirect:ehdota";
             } else {
                 session.setAttribute("nameError", viesti);
                 asetaArvotSessioon(ehdotuslomake, session);
-                return "ehdota-drinkki";
+                return "ehdota";
             }
         }
 
