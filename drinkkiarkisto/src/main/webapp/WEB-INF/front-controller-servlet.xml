@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                            http://www.springframework.org/schema/jdbc
+                            http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+                            http://www.springframework.org/schema/mvc 
+                            http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                         ">
+
+    <context:component-scan base-package="werkko.controller" />
+     <context:component-scan base-package="werkko.Services" />
+     <context:component-scan base-package="werkko.repository" />
+     <context:component-scan base-package="werkko.data" />
+     
+     <mvc:annotation-driven />
+     
+    
+     <!-- Ladataan käyttöön springin view-resolver: luokka, jota käytetään
+    näkymätiedostojen päättelyyn -->    
+    <!-- Nyt Controller-luokkien metodeissa palautettu merkkijono määrittää
+    JSP-tiedoston, joka näytetään -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+ 
+ 
+    <!-- lyhennetty versio BasicDataSource-olion luomisesta -->
+    <jdbc:embedded-database id="dataSource" type="H2"/>
+
+    <!-- käytämme persistence.xml -tiedostossa olevaa persistenceUnit-konfiguraatiota, 
+            dataSource injektoidaan luotavaan entityManagerFactory-olioon, ja 
+            JPA-apin toteuttaja on EclipseLink -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="persistenceUnit" /> 
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"/>
+        </property>
+    </bean>
+
+    <!-- Hallinnoidaan transaktioita automaattisesti -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Transaktioiden hallinta voidaan määritellä annotaatioilla -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- Muunnetaan tietokantaspesifit poikkeukset yleisemmiksi -->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+        <property name="prefix" value="/WEB-INF/jsp/" /> 
+        <property name="suffix" value=".jsp" /> 
+    </bean>
+   
+</beans>
