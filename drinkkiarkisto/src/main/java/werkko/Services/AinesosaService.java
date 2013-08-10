@@ -1,4 +1,4 @@
-/*
+  /*
  * Ainesosao change this template, choose Ainesosaools | Ainesosaemplates
  * and open the template in the editor.
  */
@@ -6,7 +6,9 @@ package werkko.Services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import werkko.data.Ainesosa;
@@ -45,6 +47,8 @@ public class AinesosaService implements AinesosaServiceRajapinta<Ainesosa> {
     public List<Ainesosa> list() {
         return ainesosaRepositoryRajapinta.list();
     }
+    
+ 
 
     public HashMap<String, Integer> annaAinesosatJaMaarat(Drinkki drinkki) {
         HashMap<String, Integer> ainesosat = new HashMap<String, Integer>();

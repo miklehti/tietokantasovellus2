@@ -22,7 +22,7 @@
          <p>${sana}</P>
         <pre>
             <c:forEach var="alkio" items="${ainesosa}">
-      <p>${alkio.key}</P>    <p>${alkio.value}</P> 
+      <p>Ainesosa: ${alkio.key}  M‰‰r‰: ${alkio.value}</P> 
             </c:forEach>
         </pre>
         

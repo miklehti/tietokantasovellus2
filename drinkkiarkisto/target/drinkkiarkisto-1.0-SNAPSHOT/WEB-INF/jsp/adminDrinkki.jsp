@@ -12,16 +12,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-        <title>Ehdotettu drinkki</title>
+        <title>Muuta/poista drinkkiä</title>
     </head>
     <body>
-        <h1>Ehdotetun drinkin resepti, voit tehdä muutoksia ja hyväksyä/hylkää. Muista antaa tyyppi.</h1>
+        <h1>Voit muuttaa drinkin tietoja tai poistaa drinkin kokonaan</h1>
          <c:url var="logout" value="http://localhost:8080/drinkkiarkisto/app/logout">   
         </c:url>
         <a href="<c:out value="${logout}"/>">logout</a>
    
         <form>
-            <label>Ehdotuksen nimi (pakollinen): <input type="text" name="drinkki_name" id="drinkki_name" value="${drinkki_name}"/></label><br>
+            <label>Drinkin nimi (pakollinen): <input type="text" name="drinkki_name" id="drinkki_name" value="${drinkki_name}"/></label><br>
             <br>
             <br>
             <label>Drinkkisi tyyppi (cocktail, alkujuoma...): <input type="text" name="tyyppi_name" id="tyyppi_name" value="${tyyppi_name}" /></label><br>
@@ -41,13 +41,12 @@
             <label>Ainesosa 5:<input type="text" name="ainesosa5" id ="ainesosa5" value="${ainesosa5}"/></label><br>
             <label>määrä: <input type="text" name="maara5" id ="maara5" value="${maara5}"/></label><br>
             <br>
-            <input type="submit" value ="Hyväksy" method ="POST" action ="http://localhost:8080/drinkkiarkisto/app/luo-drinkki-ehdotuksesta"/>
-            <input type="submit" value ="Hylkää" method ="POST" action ="${poista}"/>
+            <input type="submit" value ="Tallenna muutokset" method ="POST" action ="${paivita}"/>
+            <input type="submit" value ="Poista drinkki" method ="POST" action ="${poista}"/>
         </form>
         
               <p>${nameError}</P>
-                  <p>${onnistunutViesti}</P>
-            
+                  
       
             
               <c:url var="takaisin" value="http://localhost:8080/drinkkiarkisto/app/admin">   

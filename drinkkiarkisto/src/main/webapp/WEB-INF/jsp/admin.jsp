@@ -84,6 +84,7 @@
     <c:url var="takaisin" value="http://localhost:8080/drinkkiarkisto/app/haku">   
         </c:url>
         <a href="<c:out value="${takaisin}"/>"><-takaisin hakusivulle</a>
-
+<p>${onnistunutViesti}</P>
+            
     </body>
 </html>

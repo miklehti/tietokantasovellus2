@@ -7,6 +7,7 @@ package werkko.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
@@ -154,6 +155,25 @@ public class DrinkkiController {
 
     }
 
+    private void lNaytetaankoYllapitoLinkki(Model model) {
+        if (loginservice.getUserlogin().getAuthority().equals("admin")) {
+            HashMap<String, String> yllapitolinkki = new HashMap<String, String>();
+            yllapitolinkki.put("Yll‰pito", "http://localhost:8080/drinkkiarkisto/app/admin");
+            model.addAttribute("yllapitolinkki", yllapitolinkki);
+
+        }
+    }
+
+    private void naytetaankoLuoDrinkkiLinkki(Model model) {
+        if (loginservice.getUserlogin().getAuthority().equals("admin") || loginservice.getUserlogin().getAuthority().equals("superuser")) {
+
+            HashMap<String, String> luoDrinkki = new HashMap<String, String>();
+            luoDrinkki.put("Luo Drinkki", "http://localhost:8080/drinkkiarkisto/app/luo-drinkki");
+            model.addAttribute("luoDrinkki", luoDrinkki);
+
+        }
+    }
+
     @RequestMapping("haku")
     public String viewHakuPage(Model model, HttpSession session) {
 
@@ -161,33 +181,8 @@ public class DrinkkiController {
         if (onkoIstuntoVoimassa(session) == false) {
             return "login";
         } else {
-            if (loginservice.getUserlogin().getAuthority().equals("admin")) {
-                HashMap<String, String> yllapitolinkki = new HashMap<String, String>();
-                yllapitolinkki.put("Yll‰pito", "http://localhost:8080/drinkkiarkisto/app/admin");
-                model.addAttribute("yllapitolinkki", yllapitolinkki);
-
-            }
-            if (loginservice.getUserlogin().getAuthority().equals("admin") || loginservice.getUserlogin().getAuthority().equals("superuser")) {
-
-                HashMap<String, String> luoDrinkki = new HashMap<String, String>();
-                luoDrinkki.put("Luo Drinkki", "http://localhost:8080/drinkkiarkisto/app/luo-drinkki");
-                model.addAttribute("luoDrinkki", luoDrinkki);
-
-            }
-            String username = (String) session.getAttribute("username");
-            String usernameKanta = loginservice.getUserlogin().getName();
-            String passwordKanta = loginservice.getUserlogin().getPassword();
-            String authorityKanta = loginservice.getUserlogin().getAuthority();
-            String idKanta = loginservice.getUserlogin().getId();
-            String statusKanta = loginservice.getUserlogin().getStatus();
-            String emailKanta = loginservice.getUserlogin().getEmail();
-            model.addAttribute("username_sessio", username);
-            model.addAttribute("usernameKanta", usernameKanta);
-            model.addAttribute("authorityKanta", authorityKanta);
-            model.addAttribute("idKanta", idKanta);
-            model.addAttribute("statusKanta", statusKanta);
-            model.addAttribute("passwordKanta", passwordKanta);
-            model.addAttribute("emailKanta", emailKanta);
+            lNaytetaankoYllapitoLinkki(model);
+            naytetaankoLuoDrinkkiLinkki(model);
 
             return "haku";
         }
@@ -205,10 +200,7 @@ public class DrinkkiController {
             String sana = "Haun tulokset:";
             HashMap<String, String> osoitteita = new HashMap<String, String>();
             osoitteita = drinkkiservice.etsiDrinkkeja(hae);
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "haku ei tuottanut yht‰‰n tulosta";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
             session.setAttribute("sana", sana);
 
             session.setAttribute("osoitteita", osoitteita);
@@ -222,19 +214,55 @@ public class DrinkkiController {
         if (onkoIstuntoVoimassa(session) == false) {
             return "login";
         } else {
-            if (loginservice.getUserlogin().getAuthority().equals("admin")) {
-                HashMap<String, String> admin = new HashMap<String, String>();
-                admin.put("<-takaisin admin sivulle", "http://localhost:8080/drinkkiarkisto/app/admin");
-                model.addAttribute("admin", admin);
-
-            }
+            naytetaankoTakaisinAdminSivulle(model);
             String sana = "Ainesosat:";
-            ArrayList<String> ainesosa = new ArrayList<String>();
-            ainesosa.add("4 cl Gin");
-            ainesosa.add("8 cl Tonic-vett‰");
+            Drinkki drinkki = drinkkiservice.haeDrinkkiNimella(drinkName);
+            HashMap<String, Integer> ainesosa = ainesosaservice.annaAinesosatJaMaarat(drinkki);
+            String drinkinNimi = drinkki.getDrinkki_name();
+            model.addAttribute("drinkinNimi", drinkinNimi);
             model.addAttribute("sana", sana);
             model.addAttribute("ainesosa", ainesosa);
             return "drinkki";
+        }
+    }
+    
+        @RequestMapping(method = RequestMethod.GET, value = "{drinkName}/admindrinkki")
+    public String katsoAdminDrinkkia(Model model, @PathVariable String drinkName, HttpSession session) {
+        session.getAttribute("password");
+        if (onkoIstuntoVoimassa(session) == false) {
+            return "login";
+        } else {
+            naytetaankoTakaisinAdminSivulle(model);
+            Drinkki drinkki = drinkkiservice.haeDrinkkiNimella(drinkName);
+            List<DrinkkiAinesosa> drinkkiainesosat = drinkki.getDrinkkiAinesosa();
+            model.addAttribute("drinkki_name", drinkki.getDrinkki_name());
+            model.addAttribute("ainesosa_name", drinkkiainesosat.get(0).getAinesosa().getAinesosa_name());
+            model.addAttribute("maara", drinkkiainesosat.get(0).getMaara());
+            if (drinkkiainesosat.size() > 1) {
+                model.addAttribute("ainesosa2", drinkkiainesosat.get(1).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara2", drinkkiainesosat.get(1).getMaara());
+            }
+            if (drinkkiainesosat.size() > 2) {
+                model.addAttribute("ainesosa3", drinkkiainesosat.get(2).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara3", drinkkiainesosat.get(2).getMaara());
+            }
+            if (drinkkiainesosat.size() > 3) {
+                model.addAttribute("ainesosa3", drinkkiainesosat.get(2).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara3", drinkkiainesosat.get(2).getMaara());
+            }
+            if (drinkkiainesosat.size() > 4) {
+                model.addAttribute("ainesosa4", drinkkiainesosat.get(4).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara4", drinkkiainesosat.get(4).getMaara());
+            }
+            
+            String value = "http://localhost:8080/drinkkiarkisto/app/" + drinkName + "/poista";
+            model.addAttribute("poista", value);
+            
+             String paivita = "http://localhost:8080/drinkkiarkisto/app/" + drinkName + "/paivita";
+            model.addAttribute("paivita", paivita);
+            return "ehdotus";
+        
+  
         }
     }
 
@@ -295,7 +323,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "ehdota-drinkkia", method = RequestMethod.POST)
     public String ehdotaDrinkkia(
-           @Valid @ModelAttribute EhdotusLomake ehdotuslomake,
+            @Valid @ModelAttribute EhdotusLomake ehdotuslomake,
             BindingResult bindingResult,
             Model model,
             HttpSession session) {
@@ -306,11 +334,11 @@ public class DrinkkiController {
                 asetaVirheSessioon(ehdotuslomake, bindingResult, session);
                 return "luoDrinkki";
             }
-               ArrayList<Tyyppi> tyypit = tyyppiservice.luoDrinkinTyyppi(ehdotuslomake.getTyyppi_name());
+            ArrayList<Tyyppi> tyypit = tyyppiservice.luoDrinkinTyyppi(ehdotuslomake.getTyyppi_name());
             ArrayList<Ainesosa> ainesosat = ainesosaservice.luoDrinkinAinesosat(ehdotuslomake);
             ArrayList<DrinkkiAinesosa> drinkkiainesosat = drinkkiainesosaservice.luoDrinkinDrinkkiainesosat(ehdotuslomake, ainesosat);
             String viesti = drinkkiservice.luoUusiDrinkki(ehdotuslomake.getDrinkki_name(), tyypit, drinkkiainesosat);
-       if (viesti.equals("ok")) {
+            if (viesti.equals("ok")) {
                 String onnistunutViesti = "Kiitos ehdotuksesta!";
                 session.setAttribute("onnistunutViesti", onnistunutViesti);
                 return "redirect:ehdota";
@@ -333,10 +361,7 @@ public class DrinkkiController {
         } else {
             String sana = "Aakkosissa drinkkej‰:";
             TreeMap<String, String> osoitteita = drinkkiservice.annaDrinkitAakkosissa();
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "haku ei tuottanut yht‰‰n tulosta";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
 
             session.setAttribute("sana", sana);
 
@@ -356,10 +381,7 @@ public class DrinkkiController {
             String sana = "Tyypin mukaan tulleita tuloksia:";
             HashMap<String, String> osoitteita = drinkkiservice.annaDrinkitTyypinMukaan(hae);
 
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "haku ei tuottanut yht‰‰n tulosta";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
 
 
             session.setAttribute("sana", sana);
@@ -391,10 +413,7 @@ public class DrinkkiController {
             String sana = "Haun tulokset:";
             HashMap<String, String> osoitteita = drinkkiservice.etsiDrinkkejaAdmin(hae);
 
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "haku ei tuottanut yht‰‰n tulosta";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
 
 
             session.setAttribute("sana", sana);
@@ -413,15 +432,12 @@ public class DrinkkiController {
             return "redirect:login";
         } else {
             String sana = "Ehdotuksia:";
-            HashMap<String, String> ehdotuksia = drinkkiservice.annaEhdotukset();
+            HashMap<String, String> osoitteita = drinkkiservice.annaEhdotukset();
 
-            if (ehdotuksia.isEmpty()) {
-                String eiLoydy = "T‰ll‰ hetkell‰ ei yht‰‰n k‰sitelt‰v‰‰ ehdotusta!";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
             session.setAttribute("sana", sana);
 
-            session.setAttribute("ehdotuksia", ehdotuksia);
+            session.setAttribute("ehdotuksia", osoitteita);
             return "redirect:admin";
         }
     }
@@ -438,10 +454,7 @@ public class DrinkkiController {
             HashMap<String, String> osoitteita = drinkkiservice.annaDrinkitTyypinMukaanAdmin(hae);
 
 
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "Haku ei tuottanut yht‰‰n tulosta!";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
 
             session.setAttribute("sana", sana);
 
@@ -461,10 +474,7 @@ public class DrinkkiController {
             String sana = "Aakkosissa drinkkej‰:";
             TreeMap<String, String> osoitteita = drinkkiservice.annaDrinkitAakkosissaAdmin();
 
-            if (osoitteita.isEmpty()) {
-                String eiLoydy = "Haku ei tuottanut yht‰‰n tulosta!";
-                session.setAttribute("eiLoydy", eiLoydy);
-            }
+            hakuEiTuottanutTulosta(osoitteita, session);
 
             session.setAttribute("sana", sana);
 
@@ -647,15 +657,114 @@ public class DrinkkiController {
         if (onkoIstuntoVoimassa(session) == false) {
             return "login";
         } else {
-            String sana = "Ainesosat:";
-            ArrayList<String> ainesosa = new ArrayList<String>();
-            ainesosa.add("4 cl Vodka_ehdotus");
-            ainesosa.add("8 cl sprite‰");
-            model.addAttribute("sana", sana);
-            model.addAttribute("ainesosa", ainesosa);
+            Drinkki ehdotus = drinkkiservice.haeDrinkkiNimella(ehdotusName);
+            List<DrinkkiAinesosa> drinkkiainesosat = ehdotus.getDrinkkiAinesosa();
+            model.addAttribute("drinkki_name", ehdotus.getDrinkki_name());
+            model.addAttribute("ainesosa_name", drinkkiainesosat.get(0).getAinesosa().getAinesosa_name());
+            model.addAttribute("maara", drinkkiainesosat.get(0).getMaara());
+            if (drinkkiainesosat.size() > 1) {
+                model.addAttribute("ainesosa2", drinkkiainesosat.get(1).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara2", drinkkiainesosat.get(1).getMaara());
+            }
+            if (drinkkiainesosat.size() > 2) {
+                model.addAttribute("ainesosa3", drinkkiainesosat.get(2).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara3", drinkkiainesosat.get(2).getMaara());
+            }
+            if (drinkkiainesosat.size() > 3) {
+                model.addAttribute("ainesosa3", drinkkiainesosat.get(2).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara3", drinkkiainesosat.get(2).getMaara());
+            }
+            if (drinkkiainesosat.size() > 4) {
+                model.addAttribute("ainesosa4", drinkkiainesosat.get(4).getAinesosa().getAinesosa_name());
+                model.addAttribute("maara4", drinkkiainesosat.get(4).getMaara());
+            }
+            
+            String value = "http://localhost:8080/drinkkiarkisto/app/" + ehdotusName + "/poista";
+            model.addAttribute("poista", value);
             return "ehdotus";
         }
     }
+    
+     @RequestMapping(value = "luo-drinkki-ehdotuksesta", method = RequestMethod.POST)
+    public String luoDrinkkiEhdotuksesta(
+            @Valid @ModelAttribute DrinkkiLomake drinkkilomake,
+            BindingResult bindingResult,
+            Model model,
+            HttpSession session) {
+
+
+        if (onkoIstuntoVoimassa(session) == false) {
+            return "redirect:login";
+        } else {
+            if (bindingResult.hasErrors() || !drinkkilomake.getErrorViesti().equals("")) {
+                asetaVirheSessioon(drinkkilomake, bindingResult, session);
+                return "ehdotus";
+            }
+            ArrayList<Tyyppi> tyypit = tyyppiservice.luoDrinkinTyyppi(drinkkilomake.getTyyppi_name());
+            ArrayList<Ainesosa> ainesosat = ainesosaservice.luoDrinkinAinesosat(drinkkilomake);
+            ArrayList<DrinkkiAinesosa> drinkkiainesosat = drinkkiainesosaservice.luoDrinkinDrinkkiainesosat(drinkkilomake, ainesosat);
+            String viesti = drinkkiservice.luoUusiDrinkki(drinkkilomake.getDrinkki_name(), tyypit, drinkkiainesosat);
+            if (viesti.equals("ok")) {
+                String onnistunutViesti = "Uusi drinkki luotu tietokantaan";
+                session.setAttribute("onnistunutViesti", onnistunutViesti);
+                return "redirect:luo-drinkki-ehdotuksesta";
+            } else {
+
+                session.setAttribute("nameError", viesti);
+                asetaArvotSessioon(drinkkilomake, session);
+                return "ehdotus";
+            }
+
+
+        }
+
+
+    }
+     
+     @RequestMapping(value = "{poista}/hylkaa", method = RequestMethod.POST)
+    public String poistaEhdotus(
+            Model model, @PathVariable String ehdotusName, HttpSession session) {
+
+
+        if (onkoIstuntoVoimassa(session) == false) {
+            return "redirect:login";
+        } else {
+            Drinkki poistettava = drinkkiservice.haeDrinkkiNimella(ehdotusName);
+            drinkkiservice.delete(poistettava.getDrinkki_id());
+            String onnistunutViesti = "Ehdotus poistettu";
+                session.setAttribute("onnistunutViesti", onnistunutViesti);
+                return "admin";
+            }
+
+
+        
+
+
+    }
+     
+        @RequestMapping(value = "{paivita}/paivita", method = RequestMethod.POST)
+    public String paivitaEhdotus(
+            Model model, @PathVariable String ehdotusName, HttpSession session) {
+
+
+        if (onkoIstuntoVoimassa(session) == false) {
+            return "redirect:login";
+        } else {
+            Drinkki paivitettava = drinkkiservice.haeDrinkkiNimella(ehdotusName);
+            drinkkiservice.update(paivitettava.getDrinkki_id());
+            String onnistunutViesti = "Tiedot p‰ivitetty";
+                session.setAttribute("onnistunutViesti", onnistunutViesti);
+                return "ehdotus";
+            }
+
+
+        
+
+
+    }
+     
+     
+
 
     @RequestMapping(method = RequestMethod.GET, value = "{kayttajaName}/kayttaja")
     public String readKayttaja(Model model, @PathVariable String kayttajaName, HttpSession session) {
@@ -752,5 +861,21 @@ public class DrinkkiController {
         session.setAttribute("tyyppi_name", tyyppi_name);
         return "tulostus";
 
+    }
+
+    private void hakuEiTuottanutTulosta(Map<String, String> osoitteita, HttpSession session) {
+        if (osoitteita.isEmpty()) {
+            String eiLoydy = "Haku ei tuottanut yht‰‰n tulosta";
+            session.setAttribute("eiLoydy", eiLoydy);
+        }
+    }
+
+    private void naytetaankoTakaisinAdminSivulle(Model model) {
+        if (loginservice.getUserlogin().getAuthority().equals("admin")) {
+            HashMap<String, String> admin = new HashMap<String, String>();
+            admin.put("<-takaisin admin sivulle", "http://localhost:8080/drinkkiarkisto/app/admin");
+            model.addAttribute("admin", admin);
+
+        }
     }
 }
