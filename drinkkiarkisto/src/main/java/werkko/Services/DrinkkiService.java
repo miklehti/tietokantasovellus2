@@ -175,6 +175,10 @@ public TreeMap<String, String> annaDrinkitAakkosissa() {
 
     public HashMap<String, String> annaDrinkitTyypinMukaan(String tyyppi_nimi) {
         HashMap<String, String> drinkkeja = new HashMap<String, String>();
+        if(tyyppi_nimi==null){
+            return drinkkeja;
+        }
+        
         List<Drinkki> lista = this.list();
         for (int i = 0; i < lista.size(); i++) {
             Drinkki tutkittava = lista.get(i);
@@ -191,6 +195,9 @@ public TreeMap<String, String> annaDrinkitAakkosissa() {
     }
     public  HashMap<String, String> annaDrinkitTyypinMukaanAdmin(String tyyppi_nimi){
         HashMap<String, String> drinkkeja = new HashMap<String, String>();
+        if(tyyppi_nimi==null){
+            return drinkkeja;
+        }
         List<Drinkki> lista = this.list();
         for (int i = 0; i < lista.size(); i++) {
             Drinkki tutkittava = lista.get(i);

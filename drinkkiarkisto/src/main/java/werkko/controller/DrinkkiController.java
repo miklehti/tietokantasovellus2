@@ -260,7 +260,7 @@ public class DrinkkiController {
             
              String paivita = "http://localhost:8080/drinkkiarkisto/app/" + drinkName + "/paivita";
             model.addAttribute("paivita", paivita);
-            return "ehdotus";
+            return "adminDrinkki";
         
   
         }
@@ -411,14 +411,14 @@ public class DrinkkiController {
             return "redirect:login";
         } else {
             String sana = "Haun tulokset:";
-            HashMap<String, String> osoitteita = drinkkiservice.etsiDrinkkejaAdmin(hae);
+            HashMap<String, String> admin_osoitteita = drinkkiservice.etsiDrinkkejaAdmin(hae);
 
-            hakuEiTuottanutTulosta(osoitteita, session);
+            hakuEiTuottanutTulosta(admin_osoitteita, session);
 
 
             session.setAttribute("sana", sana);
 
-            session.setAttribute("osoitteita", osoitteita);
+            session.setAttribute("admin_osoitteita", admin_osoitteita);
             return "redirect:admin";
         }
     }
@@ -432,12 +432,12 @@ public class DrinkkiController {
             return "redirect:login";
         } else {
             String sana = "Ehdotuksia:";
-            HashMap<String, String> osoitteita = drinkkiservice.annaEhdotukset();
+            HashMap<String, String> admin_osoitteita = drinkkiservice.annaEhdotukset();
 
-            hakuEiTuottanutTulosta(osoitteita, session);
+            hakuEiTuottanutTulosta(admin_osoitteita, session);
             session.setAttribute("sana", sana);
 
-            session.setAttribute("ehdotuksia", osoitteita);
+            session.setAttribute("admin_osoitteita", admin_osoitteita);
             return "redirect:admin";
         }
     }
@@ -451,14 +451,14 @@ public class DrinkkiController {
             return "redirect:login";
         } else {
             String sana = "Tyypin mukaan tulleita tuloksia:";
-            HashMap<String, String> osoitteita = drinkkiservice.annaDrinkitTyypinMukaanAdmin(hae);
+            HashMap<String, String> admin_osoitteita = drinkkiservice.annaDrinkitTyypinMukaanAdmin(hae);
 
 
-            hakuEiTuottanutTulosta(osoitteita, session);
+            hakuEiTuottanutTulosta(admin_osoitteita, session);
 
             session.setAttribute("sana", sana);
 
-            session.setAttribute("osoitteita", osoitteita);
+            session.setAttribute("osoitteita", admin_osoitteita);
             return "redirect:admin";
         }
     }
