@@ -81,7 +81,7 @@ public class UserLoginService implements LoginService<UserLogin> {
             }
             return "Väärä salasana";
         }
-        return "käyttäjää ei löytynyt";
+        return "Käyttäjää ei löytynyt";
     }
 
     public boolean onkoKayttajaaOlemassa(String username) {
