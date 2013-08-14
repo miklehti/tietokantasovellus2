@@ -1,0 +1,6 @@
+#surefire
+#Wed Aug 14 10:09:27 EEST 2013
+user.dir=C\:\\Users\\Public\\Documents\\Omat\\klooni4\\tietokantasovellus2\\drinkkiarkisto
+localRepository=C\:\\Users\\lehtimik\\.m2\\repository
+basedir=C\:\\Users\\Public\\Documents\\Omat\\klooni4\\tietokantasovellus2\\drinkkiarkisto
+test=selenium.LoginSeleniumTest
