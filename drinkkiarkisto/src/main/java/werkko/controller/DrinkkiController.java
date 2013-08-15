@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import werkko.Services.AinesosaServiceRajapinta;
 
@@ -67,6 +68,20 @@ public class DrinkkiController {
         userlogin.setPassword("secret");
         userlogin.setEmail("mikko@mikko");
         loginservice.create(userlogin);
+        
+              UserLogin userlogin2 = new UserLogin();
+        userlogin2.setAuthority("user");
+        userlogin2.setName("lasse");
+        userlogin2.setPassword("secret");
+        userlogin2.setEmail("lasse@lasse");
+        loginservice.create(userlogin2);
+        
+              UserLogin userlogin3 = new UserLogin();
+        userlogin3.setAuthority("superuser");
+        userlogin3.setName("jouni");
+        userlogin3.setPassword("secret");
+        userlogin3.setEmail("jouni@jouni");
+        loginservice.create(userlogin3);
 
         Ainesosa gin = new Ainesosa();
         gin.setAinesosa_name("Gin");
@@ -282,6 +297,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "rekisteroidy", method = RequestMethod.POST)
     public String lisaaKayttajia(
+            RedirectAttributes redirectAttributes,
             @Valid @ModelAttribute UserLogin userlogin,
             BindingResult bindingResult,
             @RequestParam(value = "password2", required = true) String password2,
@@ -312,6 +328,8 @@ public class DrinkkiController {
             session.setAttribute("username", userlogin.getName());
             session.setAttribute("password", userlogin.getPassword());
             loginservice.setUserlogin(uusiKayttaja);
+            redirectAttributes.addFlashAttribute("viesti", "Tervetuloa uusi käyttäjä!");
+            
             return "redirect:haku";
         } else {
             session.setAttribute("nameError", uusiKayttaja.getStatus());

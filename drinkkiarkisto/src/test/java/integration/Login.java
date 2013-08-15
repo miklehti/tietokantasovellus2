@@ -4,6 +4,7 @@
  */
 package integration;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class Login {
         Assert.assertEquals("pekka", userloginservice.annaUserLogin("pekka").getName());
         Assert.assertEquals("secret2", userloginservice.annaUserLogin("pekka").getPassword());
         Assert.assertEquals("user", userloginservice.annaUserLogin("pekka").getAuthority());
-        Assert.assertEquals(2, userloginservice.list().size());
+        Assert.assertEquals(4, userloginservice.list().size());
     }
 
     @Test
@@ -89,16 +90,17 @@ public class Login {
         userlogin.setEmail("b@b");
         userlogin.setPassword("secret3");
         userloginservice.update(userlogin);
+        List<UserLogin> lista = userloginservice.list();
         Assert.assertEquals("b@b", userloginservice.annaUserLogin("pekka").getEmail());
         Assert.assertEquals("secret3", userloginservice.annaUserLogin("pekka").getPassword());
         Assert.assertEquals("superuser", userloginservice.annaUserLogin("pekka").getAuthority());
-        Assert.assertEquals(2, userloginservice.list().size());
+        Assert.assertEquals(4, userloginservice.list().size());
     }
 
     @Test
     public void poistaKayttajaTest() {
         UserLogin poistettava = userloginservice.annaUserLogin("pekka");
         userloginservice.delete(poistettava.getId());
-        Assert.assertEquals(1, userloginservice.list().size());
+        Assert.assertEquals(3, userloginservice.list().size());
     }
 }

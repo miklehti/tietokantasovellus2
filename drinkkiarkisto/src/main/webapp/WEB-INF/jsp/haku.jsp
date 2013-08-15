@@ -15,7 +15,7 @@
         <title>Drinkkien haku</title>
     </head>
     <body>
-        <h1>Drinkkiarkisto</h1>
+        <h1>Drinkkiarkisto ${viesti}</h1>
         
       
         <c:url var="thisURL" value="http://localhost:8080/drinkkiarkisto/app/logout">   

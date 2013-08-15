@@ -41,21 +41,20 @@ public class LoginSeleniumTest {
     public LoginSeleniumTest() {
     }
 
-  @BeforeClass
-  public static void createAndStartService() {
-    service = new ChromeDriverService.Builder()
-        .usingChromeDriverExecutable(new File("C:\\Drivers\\chromedriver.exe"))
-        .usingAnyFreePort()
-        .build();
-    try{
-    service.start();
-    }catch (IOException e){
-        throw Throwables.propagate(e);
+    @BeforeClass
+    public static void createAndStartService() {
+        service = new ChromeDriverService.Builder()
+                .usingChromeDriverExecutable(new File("C:\\Drivers\\chromedriver.exe"))
+                .usingAnyFreePort()
+                .build();
+        try {
+            service.start();
+        } catch (IOException e) {
+            throw Throwables.propagate(e);
+        }
     }
-  }
 
     @AfterClass
-    
     public static void tearDownClass() {
         service.stop();
     }
@@ -63,19 +62,19 @@ public class LoginSeleniumTest {
     @Before
     public void setUp() {
         driver = new RemoteWebDriver(service.getUrl(),
-        DesiredCapabilities.chrome());
+                DesiredCapabilities.chrome());
         this.baseAddress = "localhost:8080/drinkkiarkisto";
-        
+
     }
 
     @After
     public void tearDown() {
-          driver.quit();
+        driver.quit();
     }
 
     @Test
     public void LoginSuccessChrome() {
-       
+
 
         // Go to the Google Suggest home page
         driver.get(baseAddress);
@@ -101,9 +100,10 @@ public class LoginSeleniumTest {
         Assert.assertNotNull("Element \"age\" not found.", element);
 
     }
-        @Test
+
+    @Test
     public void LoginFailureChrome() {
-       
+
 
         // Go to the Google Suggest home page
         driver.get(baseAddress);
@@ -124,16 +124,16 @@ public class LoginSeleniumTest {
         element.submit();
 
         // haetaan kentt‰ nimelt‰ "age"
-       boolean loytyyko = driver.getPageSource().contains("K‰ytt‰j‰‰ ei lˆytynyt");
-        
+        boolean loytyyko = driver.getPageSource().contains("K‰ytt‰j‰‰ ei lˆytynyt");
+
 
         Assert.assertTrue(loytyyko);
 
     }
-        
-        @Test
+
+    @Test
     public void LoginFailure2Chrome() {
-       
+
 
         // Go to the Google Suggest home page
         driver.get(baseAddress);
@@ -154,10 +154,50 @@ public class LoginSeleniumTest {
         element.submit();
 
         // haetaan kentt‰ nimelt‰ "age"
-       boolean loytyyko = driver.getPageSource().contains("V‰‰r‰ salasana");
-        
+        boolean loytyyko = driver.getPageSource().contains("V‰‰r‰ salasana");
+
 
         Assert.assertTrue(loytyyko);
+
+    }
+
+    @Test
+    public void rekisteroidy2ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("Tervetuloa uusi k‰ytt‰j‰!");
+
+        Assert.assertTrue(loytyyko);
+        driver.navigate().to("http://localhost:8080/drinkkiarkisto/app/ehdota");
+        driver.navigate().back();
+        loytyyko = driver.getPageSource().contains("Tervetuloa uusi k‰ytt‰j‰!");
+        Assert.assertFalse(loytyyko);
+
 
     }
 }

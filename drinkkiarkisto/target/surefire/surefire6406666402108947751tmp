@@ -1,0 +1,10 @@
+#surefire
+#Thu Aug 15 08:42:45 EEST 2013
+jpda.listen=true
+maven.surefire.debug=-Xdebug -Xrunjdwp\:transport\=dt_socket,server\=n,address\=23354
+user.dir=C\:\\Users\\Public\\Documents\\Omat\\klooni4\\tietokantasovellus2\\drinkkiarkisto
+jpda.address=23354
+localRepository=C\:\\Users\\lehtimik\\.m2\\repository
+forkMode=once
+basedir=C\:\\Users\\Public\\Documents\\Omat\\klooni4\\tietokantasovellus2\\drinkkiarkisto
+test=selenium.LoginSeleniumTest
