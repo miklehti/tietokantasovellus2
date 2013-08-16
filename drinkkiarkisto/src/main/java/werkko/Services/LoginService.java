@@ -29,4 +29,5 @@ public interface LoginService<T> {
 
     void setUserlogin(UserLogin userlogin);
       UserLogin annaUserLogin(String username);
+      String annaVirheenTulkinta(String errorviesti, String field);
 }

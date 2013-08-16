@@ -4,7 +4,7 @@
     Author     : lehtimik
 --%>
 
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -28,23 +28,23 @@
            
 
         <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-admin">
-            <label>Hae drinkkej‰: <input type="text" name="hae-admin" id="hae-admin" /></label>
-            <input type="submit" value ="Hae drinkkej‰"/>
+            <label>Hae drinkkej√§: <input type="text" name="hae-admin" id="hae-admin" /></label>
+            <input type="submit" value ="Hae drinkkej√§"/>
         </form>
 
     
         <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-tyyppi-admin">
-            <label>Hae tyypill‰: <input type="text" name="hae-tyyppi" id="hae-tyyppi" /></label>
-            <input type="submit" value ="Hae tyypill‰"/>
+            <label>Hae tyypill√§: <input type="text" name="hae-tyyppi" id="hae-tyyppi" /></label>
+            <input type="submit" value ="Hae tyypill√§"/>
         </form>
 
         <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-aakkoset-admin">
-            <label>Hae aakkosj‰rjestyksess‰: </label>
+            <label>Hae aakkosj√§rjestyksess√§: </label>
             <input type="submit" value ="Hae aakkosilla"/>
         </form>
 
       
- <p>Drinkkej‰ haun tuloksella (muutettavaksi):</P>
+ <p>Drinkkej√§ haun tuloksella (muutettavaksi):</P>
 
       <p>${eiLoydy}</P>
 
@@ -58,7 +58,7 @@
             <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-ehdotuksia-admin">
             <input type="submit" value ="Hae ehdotuksia"/>
         </form>
-  <p>Ehdotuksia hyv‰ksytt‰v‰ksi:</P>
+  <p>Ehdotuksia hyv√§ksytt√§v√§ksi:</P>
   
   <p>${eiEhdotuksia}</P>
         <pre>
@@ -70,11 +70,11 @@
         
 
         <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-kayttaja">
-            <label>Hae kaikki k‰ytt‰j‰t: </label>
+            <label>Hae kaikki k√§ytt√§j√§t: </label>
             <input type="submit" value ="Hae"/>
         </form>  
         
-  <p>K‰ytt‰j‰t:</P>
+  <p>K√§ytt√§j√§t:</P>
 <pre>
             <c:forEach var="kayttaja" items="${kayttajia}">
     <a href="${kayttaja.value}">${kayttaja.key}</a>

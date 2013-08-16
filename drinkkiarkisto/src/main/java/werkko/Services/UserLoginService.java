@@ -117,4 +117,37 @@ public class UserLoginService implements LoginService<UserLogin> {
         userlogin.setStatus("Käyttäjää ei löydy");
         return userlogin;
     }
+
+    public String annaVirheenTulkinta(String errorviesti, String field) {
+        if (errorviesti.equals("length must be between 5 and 15") && field.equals("name")) {
+            return "tarkista käyttäjänimen pituus (5-15 merkkiä)";
+        }
+        if (errorviesti.equals("length must be between 5 and 15") && field.equals("password")) {
+            return "tarkista salasanan pituus (5-15 merkkiä)";
+        }
+        if (errorviesti.equals("length must be between 5 and 15") && field.equals("password2")) {
+            return "tarkista salasanan pituus (5-15 merkkiä)";
+        }
+        if (errorviesti.equals("may not be empty") && field.equals("password")) {
+            return "salasana on pakollinen tieto";
+        }
+
+        if (errorviesti.equals("may not be empty") && field.equals("name")) {
+            return "käyttäjätunnus on pakollinen tieto";
+        }
+        
+        if (errorviesti.equals("may not be empty") && field.equals("password2")) {
+            return "salasana on pakollinen tieto";
+        }
+         if (errorviesti.equals("may not be empty") && field.equals("email")) {
+            return "sähköpostiosoite on pakollinen tieto";
+        
+         }
+         if (errorviesti.equals("email not a well-formed email address") && field.equals("email")) {
+            return "sähköpostiosoite ei ole oikeaa muotoa";
+        
+         }
+         
+        return null;
+    }
 }

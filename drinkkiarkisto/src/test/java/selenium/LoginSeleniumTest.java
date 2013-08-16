@@ -194,9 +194,80 @@ public class LoginSeleniumTest {
 
         Assert.assertTrue(loytyyko);
         driver.navigate().to("http://localhost:8080/drinkkiarkisto/app/ehdota");
-        driver.navigate().back();
+        driver.navigate().to("http://localhost:8080/drinkkiarkisto/app/hae");
         loytyyko = driver.getPageSource().contains("Tervetuloa uusi k‰ytt‰j‰!");
         Assert.assertFalse(loytyyko);
+
+
+    }
+    
+        @Test
+    public void rekisteroidyVirheHerjatChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret2");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("Antamasi salasanat eiv‰t ole samoja");
+
+        Assert.assertTrue(loytyyko);        
+
+
+    }
+         @Test
+    public void rekisteroidyVirheHerjat2ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret2");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("Antamasi salasanat eiv‰t ole samoja");
+
+        Assert.assertTrue(loytyyko);        
 
 
     }

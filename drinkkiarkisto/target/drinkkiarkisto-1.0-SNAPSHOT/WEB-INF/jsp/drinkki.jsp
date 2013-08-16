@@ -4,7 +4,7 @@
     Author     : lehtimik
 --%>
 
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,7 @@
          <p>${sana}</P>
         <pre>
             <c:forEach var="alkio" items="${ainesosa}">
-      <p>Ainesosa: ${alkio.key}  M‰‰r‰: ${alkio.value}</P> 
+      <p>Ainesosa: ${alkio.key}  M√§√§r√§: ${alkio.value}</P> 
             </c:forEach>
         </pre>
         

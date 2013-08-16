@@ -4,7 +4,7 @@
     Author     : lehtimik
 --%>
 
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -29,19 +29,19 @@
         
         <c:url var="ehdota" value="http://localhost:8080/drinkkiarkisto/app/ehdota">   
         </c:url>
-        <a href="<c:out value="${ehdota}"/>">Ehdota drinkki‰</a>
+        <a href="<c:out value="${ehdota}"/>">Ehdota drinkki√§</a>
 
         <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae">
-            <label>Hae drinkkej‰: <input type="text" name="hae" id="hae" /></label>
+            <label>Hae drinkkej√§: <input type="text" name="hae" id="hae" /></label>
             <input type="submit" value ="Hae"/>
         </form>
  <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-tyyppi">
-            <label>Hae tyypill‰: <input type="text" name="hae-tyyppi" id="hae-tyyppi" /></label>
-            <input type="submit" value ="Hae tyypill‰"/>
+            <label>Hae tyypill√§: <input type="text" name="hae-tyyppi" id="hae-tyyppi" /></label>
+            <input type="submit" value ="Hae tyypill√§"/>
         </form>
         
               <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-aakkoset">
-            <label>Hae aakkosj‰rjestyksess‰: </label>
+            <label>Hae aakkosj√§rjestyksess√§: </label>
             <input type="submit" value ="Hae aakkosilla"/>
         </form>
 

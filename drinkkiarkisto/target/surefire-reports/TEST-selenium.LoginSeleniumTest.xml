@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="10.625" errors="0" skipped="0" tests="4" name="selenium.LoginSeleniumTest">
+<testsuite failures="0" time="10.11" errors="0" skipped="0" tests="5" name="selenium.LoginSeleniumTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jdk1.6.0_38\jre\bin"/>
@@ -60,8 +60,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"/>
   </properties>
-  <testcase time="2.302" classname="selenium.LoginSeleniumTest" name="LoginSuccessChrome"/>
-  <testcase time="2.303" classname="selenium.LoginSeleniumTest" name="LoginFailureChrome"/>
-  <testcase time="1.537" classname="selenium.LoginSeleniumTest" name="LoginFailure2Chrome"/>
-  <testcase time="2.759" classname="selenium.LoginSeleniumTest" name="rekisteroidy2ChromeTest"/>
+  <testcase time="1.581" classname="selenium.LoginSeleniumTest" name="LoginSuccessChrome"/>
+  <testcase time="1.267" classname="selenium.LoginSeleniumTest" name="LoginFailureChrome"/>
+  <testcase time="1.738" classname="selenium.LoginSeleniumTest" name="LoginFailure2Chrome"/>
+  <testcase time="1.746" classname="selenium.LoginSeleniumTest" name="rekisteroidy2ChromeTest"/>
+  <testcase time="1.523" classname="selenium.LoginSeleniumTest" name="rekisteroidyVirheHerjatChromeTest"/>
 </testsuite>
