@@ -35,4 +35,5 @@ public interface DrinkkiServiceRajapinta<T> {
       HashMap<String, String> annaEhdotukset();
       HashMap<String, String> annaDrinkitTyypinMukaanAdmin(String tyyppi_nimi);
       TreeMap<String, String> annaDrinkitAakkosissaAdmin();
+       String annaLomakeVirheenTulkinta(String errorviesti, String field);
 }

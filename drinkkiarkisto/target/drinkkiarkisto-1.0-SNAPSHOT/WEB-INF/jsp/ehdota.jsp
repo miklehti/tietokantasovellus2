@@ -39,7 +39,7 @@
         <a href="<c:out value="${takaisin}"/>"><-takaisin hakusivulle</a>
         
          <p>${nameError}</P>
-                  <p>${onnistunutViesti}</P>
+                  <p>${viesti}</P>
                   
     </body>
 </html> 

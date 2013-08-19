@@ -88,7 +88,7 @@ public class DrinkkiService implements DrinkkiServiceRajapinta<Drinkki> {
 
             for (int j = 0; j < tutkittavanDrinkinTyypit.size(); j++) {
                 if (tutkittavanDrinkinTyypit.get(j).getTyyppi_name().equals("ehdotus")) {
-                    lista.remove(new Integer(i));
+                    lista.remove(i);
                 }
 
             }
@@ -143,7 +143,7 @@ public class DrinkkiService implements DrinkkiServiceRajapinta<Drinkki> {
 public Drinkki haeDrinkkiNimella(String drink_name) {
         List<Drinkki> lista = this.list();
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getDrinkki_name().equals(drink_name)) {
+            if (lista.get(i).getDrinkki_name().toLowerCase().equals(drink_name.toLowerCase())) {
                 return lista.get(i);
             }
         }
@@ -225,5 +225,50 @@ public TreeMap<String, String> annaDrinkitAakkosissa() {
         TreeMap<String, String> aakkosissaDrinkit = new TreeMap<String, String>(new MyComparator());
         aakkosissaDrinkit.putAll(drinkkeja);
         return aakkosissaDrinkit;
+    }
+    
+            
+             public String annaLomakeVirheenTulkinta(String errorviesti, String field) {
+        if (errorviesti.equals("length must be between 2 and 15") && field.equals("drinkki_name")) {
+            return "tarkista drinkin nimen pituus (2-15 merkki‰)";
+        }
+        if (errorviesti.equals("length must be between 2 and 15") && field.equals("tyyppi_name")) {
+            return "tarkista tyyppisi arvo (2-15 merkki‰)";
+        }
+        if (errorviesti.equals("length must be between 2 and 15") && field.equals("ainesosa_name")) {
+            return "tarkista ainesosasi nimen pituus (2-15 merkki‰)";
+        }
+        if (errorviesti.equals("may not be empty") && field.equals("drinkki_name")) {
+            return "drinkin nimi on pakollinen tieto";
+        }
+
+        if (errorviesti.equals("may not be empty") && field.equals("tyyppi_name")) {
+            return "tyyppi on pakollinen tieto";
+        }
+        
+        if (errorviesti.equals("may not be empty") && field.equals("ainesosa_name")) {
+            return "p‰‰ainesosa on pakollinen tieto";
+        }
+        
+          if (errorviesti.equals("length must be between 2 and 15") && field.equals("ainesosa2")) {
+            return "tarkista ainesosasi nimen pituus (2-15 merkki‰)";
+        }
+          
+            if (errorviesti.equals("length must be between 2 and 15") && field.equals("ainesosa3")) {
+            return "tarkista ainesosasi nimen pituus (2-15 merkki‰)";
+        }
+              if (errorviesti.equals("length must be between 2 and 15") && field.equals("ainesosa3")) {
+            return "tarkista ainesosasi nimen pituus (2-15 merkki‰)";
+        }
+                if (errorviesti.equals("length must be between 2 and 15") && field.equals("ainesosa4")) {
+            return "tarkista ainesosasi nimen pituus (2-15 merkki‰)";
+        }
+                
+                      if (errorviesti.equals("may not be null") && field.equals("maara")) {
+            return "p‰‰ainesosan m‰‰r‰ on pakollinen tieto";
+        }
+        
+         
+        return null;
     }
 }

@@ -200,8 +200,8 @@ public class LoginSeleniumTest {
 
 
     }
-    
-        @Test
+
+    @Test
     public void rekisteroidyVirheHerjatChromeTest() {
         driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
 
@@ -209,7 +209,7 @@ public class LoginSeleniumTest {
         WebElement element = driver.findElement(By.name("name"));
 
         // asetetaan kentt‰‰n arvo
-        element.sendKeys("mirkku");
+        element.sendKeys("markku");
 
         element = driver.findElement(By.name("password"));
 
@@ -232,12 +232,226 @@ public class LoginSeleniumTest {
         // haetaan kentt‰ nimelt‰ "age"
         boolean loytyyko = driver.getPageSource().contains("Antamasi salasanat eiv‰t ole samoja");
 
-        Assert.assertTrue(loytyyko);        
+        Assert.assertTrue(loytyyko);
 
 
     }
-         @Test
+
+    @Test
     public void rekisteroidyVirheHerjat2ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("ma");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret2");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("tarkista k‰ytt‰j‰nimen pituus (5-15 merkki‰)");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    @Test
+    public void rekisteroidyVirheHerjat3ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("markku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("se");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("se");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("tarkista salasanan pituus (5-15 merkki‰)");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    @Test
+    public void rekisteroidyVirheHerjat4ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("markku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("tarkista salasanan pituus (5-15 merkki‰)");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    @Test
+    public void rekisteroidyVirheHerjat5ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("mirkku@mirkku");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("k‰ytt‰j‰tunnus on pakollinen tieto");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    public void rekisteroidyVirheHerjat6ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("markku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("s‰hkˆpostiosoite on pakollinen tieto");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    public void rekisteroidyVirheHerjat7ChromeTest() {
+        driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
+
+        // haetaan kentt‰ nimelt‰ tunnus
+        WebElement element = driver.findElement(By.name("name"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("markku");
+
+        element = driver.findElement(By.name("password"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("password2"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("secret");
+
+        element = driver.findElement(By.name("email"));
+
+        // asetetaan kentt‰‰n arvo
+        element.sendKeys("aaaa");
+
+        // l‰hetet‰‰n lomake
+        element.submit();
+
+        // haetaan kentt‰ nimelt‰ "age"
+        boolean loytyyko = driver.getPageSource().contains("s‰hkˆpostiosoite ei ole oikeaa muotoa");
+
+        Assert.assertTrue(loytyyko);
+
+
+    }
+
+    public void rekisteroidyVirheHerjat8ChromeTest() {
         driver.get("http://localhost:8080/drinkkiarkisto/app/rekisteroidy");
 
         // haetaan kentt‰ nimelt‰ tunnus
@@ -254,20 +468,20 @@ public class LoginSeleniumTest {
         element = driver.findElement(By.name("password2"));
 
         // asetetaan kentt‰‰n arvo
-        element.sendKeys("secret2");
+        element.sendKeys("secret");
 
         element = driver.findElement(By.name("email"));
 
         // asetetaan kentt‰‰n arvo
-        element.sendKeys("mirkku@mirkku");
+        element.sendKeys("a@a");
 
         // l‰hetet‰‰n lomake
         element.submit();
 
         // haetaan kentt‰ nimelt‰ "age"
-        boolean loytyyko = driver.getPageSource().contains("Antamasi salasanat eiv‰t ole samoja");
+        boolean loytyyko = driver.getPageSource().contains("K‰ytt‰j‰ on jo olemassa");
 
-        Assert.assertTrue(loytyyko);        
+        Assert.assertTrue(loytyyko);
 
 
     }
