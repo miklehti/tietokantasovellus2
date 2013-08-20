@@ -20,7 +20,7 @@
         </c:url>
         <a href="<c:out value="${logout}"/>">logout</a>
    
-        <form>
+        <form method ="POST">
             <label>Ehdotuksen nimi (pakollinen): <input type="text" name="drinkki_name" id="drinkki_name" value="${drinkki_name}"/></label><br>
             <br>
             <br>

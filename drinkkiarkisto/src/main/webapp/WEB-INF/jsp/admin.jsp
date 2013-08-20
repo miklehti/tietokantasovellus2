@@ -44,7 +44,7 @@
         </form>
 
       
- <p>Drinkkejä haun tuloksella (muutettavaksi):</P>
+ <p>Drinkkejä/ehdotuksia haun tuloksella (muutettavaksi/hyväksyttäväksi):</P>
 
       <p>${eiLoydy}</P>
 
@@ -58,7 +58,7 @@
             <form method="POST" action="http://localhost:8080/drinkkiarkisto/app/hae-ehdotuksia-admin">
             <input type="submit" value ="Hae ehdotuksia"/>
         </form>
-  <p>Ehdotuksia hyväksyttäväksi:</P>
+
   
   <p>${eiEhdotuksia}</P>
         <pre>

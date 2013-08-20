@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -150,7 +151,7 @@ public class DrinkkiController {
             @RequestParam(value = "password", required = true) String password,
             HttpSession session) {
 
-        String viesti = loginservice.loginOK(username, password);
+        String viesti = loginservice.loginOK(StringEscapeUtils.escapeHtml4(username), StringEscapeUtils.escapeHtml4(password));
 
         if (viesti.equals("ok")) {
             session.setAttribute("username", username);
@@ -217,7 +218,7 @@ public class DrinkkiController {
         } else {
             String sana = "Haun tulokset:";
             HashMap<String, String> osoitteita = new HashMap<String, String>();
-            osoitteita = drinkkiservice.etsiDrinkkeja(hae);
+            osoitteita = drinkkiservice.etsiDrinkkeja(StringEscapeUtils.escapeHtml4(hae));
             hakuEiTuottanutTulosta(osoitteita, redirectAttributes);
             session.setAttribute("sana", sana);
 
@@ -579,6 +580,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "luo-drinkki", method = RequestMethod.POST)
     public String luoDrinkki(
+            RedirectAttributes redirectAttributes,
             @Valid @ModelAttribute DrinkkiLomake drinkkilomake,
             BindingResult bindingResult,
             Model model,
@@ -588,6 +590,7 @@ public class DrinkkiController {
         if (onkoIstuntoVoimassa(session) == false) {
             return "redirect:login";
         } else {
+            drinkkilomake.tutkiVirheita();
             if (bindingResult.hasErrors() || !drinkkilomake.getErrorViesti().equals("")) {
                 asetaVirheSessioon(drinkkilomake, bindingResult, session);
                 return "luoDrinkki";
@@ -597,8 +600,8 @@ public class DrinkkiController {
             ArrayList<DrinkkiAinesosa> drinkkiainesosat = drinkkiainesosaservice.luoDrinkinDrinkkiainesosat(drinkkilomake, ainesosat);
             String viesti = drinkkiservice.luoUusiDrinkki(drinkkilomake.getDrinkki_name(), tyypit, drinkkiainesosat);
             if (viesti.equals("ok")) {
-                String onnistunutViesti = "Uusi drinkki luotu tietokantaan";
-                session.setAttribute("onnistunutViesti", onnistunutViesti);
+                redirectAttributes.addFlashAttribute("onnistunutViesti", "Uusi drinkki luotu tietokantaan!");
+                 session.setAttribute("nameError", "");
                 return "redirect:luo-drinkki";
             } else {
 
@@ -703,6 +706,7 @@ public class DrinkkiController {
             model.addAttribute("drinkki_name", ehdotus.getDrinkki_name());
             model.addAttribute("ainesosa_name", drinkkiainesosat.get(0).getAinesosa().getAinesosa_name());
             model.addAttribute("maara", drinkkiainesosat.get(0).getMaara());
+             model.addAttribute("tyyppi_name", "");
             if (drinkkiainesosat.size() > 1) {
                 model.addAttribute("ainesosa2", drinkkiainesosat.get(1).getAinesosa().getAinesosa_name());
                 model.addAttribute("maara2", drinkkiainesosat.get(1).getMaara());
@@ -720,7 +724,7 @@ public class DrinkkiController {
                 model.addAttribute("maara4", drinkkiainesosat.get(4).getMaara());
             }
 
-            String value = "http://localhost:8080/drinkkiarkisto/app/" + ehdotusName + "/poista";
+            String value = "http://localhost:8080/drinkkiarkisto/app/" + ehdotusName + "/hylkaa";
             model.addAttribute("poista", value);
             return "ehdotus";
         }
@@ -728,6 +732,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "luo-drinkki-ehdotuksesta", method = RequestMethod.POST)
     public String luoDrinkkiEhdotuksesta(
+            RedirectAttributes redirectAttributes,
             @Valid @ModelAttribute DrinkkiLomake drinkkilomake,
             BindingResult bindingResult,
             Model model,
@@ -737,6 +742,7 @@ public class DrinkkiController {
         if (onkoIstuntoVoimassa(session) == false) {
             return "redirect:login";
         } else {
+            drinkkilomake.tutkiVirheita();
             if (bindingResult.hasErrors() || !drinkkilomake.getErrorViesti().equals("")) {
                 asetaVirheSessioon(drinkkilomake, bindingResult, session);
                 return "ehdotus";
@@ -746,9 +752,9 @@ public class DrinkkiController {
             ArrayList<DrinkkiAinesosa> drinkkiainesosat = drinkkiainesosaservice.luoDrinkinDrinkkiainesosat(drinkkilomake, ainesosat);
             String viesti = drinkkiservice.luoUusiDrinkki(drinkkilomake.getDrinkki_name(), tyypit, drinkkiainesosat);
             if (viesti.equals("ok")) {
-                String onnistunutViesti = "Uusi drinkki luotu tietokantaan";
-                session.setAttribute("onnistunutViesti", onnistunutViesti);
-                return "redirect:luo-drinkki-ehdotuksesta";
+                redirectAttributes.addFlashAttribute("onnistunutViesti", "Uusi drinkki luotu tietokantaan");
+           
+                return "redirect:admin";
             } else {
 
                 session.setAttribute("nameError", viesti);
@@ -764,6 +770,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "{poista}/hylkaa", method = RequestMethod.POST)
     public String poistaEhdotus(
+            RedirectAttributes redirectAttributes,
             Model model, @PathVariable String ehdotusName, HttpSession session) {
 
 
@@ -772,9 +779,9 @@ public class DrinkkiController {
         } else {
             Drinkki poistettava = drinkkiservice.haeDrinkkiNimella(ehdotusName);
             drinkkiservice.delete(poistettava.getDrinkki_id());
-            String onnistunutViesti = "Ehdotus poistettu";
-            session.setAttribute("onnistunutViesti", onnistunutViesti);
-            return "admin";
+            redirectAttributes.addFlashAttribute("onnistunutViesti", "Ehdotus poistettu");
+            
+            return "redirect:admin";
         }
 
 
@@ -785,6 +792,7 @@ public class DrinkkiController {
 
     @RequestMapping(value = "{paivita}/paivita", method = RequestMethod.POST)
     public String paivitaEhdotus(
+             RedirectAttributes redirectAttributes,
             Model model, @PathVariable String ehdotusName, HttpSession session) {
 
 
@@ -793,9 +801,9 @@ public class DrinkkiController {
         } else {
             Drinkki paivitettava = drinkkiservice.haeDrinkkiNimella(ehdotusName);
             drinkkiservice.update(paivitettava.getDrinkki_id());
-            String onnistunutViesti = "Tiedot päivitetty";
-            session.setAttribute("onnistunutViesti", onnistunutViesti);
-            return "ehdotus";
+            redirectAttributes.addFlashAttribute("onnistunutViesti", "Tiedot päivitetty");
+            
+            return "redirect:admin";
         }
 
 
