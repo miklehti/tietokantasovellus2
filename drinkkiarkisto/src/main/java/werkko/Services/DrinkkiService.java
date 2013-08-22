@@ -82,7 +82,8 @@ public class DrinkkiService implements DrinkkiServiceRajapinta<Drinkki> {
     }
 
     public void poistaDrinkitJoissaTyyppiOnEhdotus(List<Drinkki> lista) {
-        for (int i = 0; i < lista.size(); i++) {
+        int listanKoko = lista.size();
+        for (int i = 0; i < listanKoko; i++) {
             Drinkki tutkittavaDrinkki = lista.get(i);
             List<Tyyppi> tutkittavanDrinkinTyypit = tutkittavaDrinkki.getTyypit();
 
@@ -271,4 +272,6 @@ public TreeMap<String, String> annaDrinkitAakkosissa() {
          
         return null;
     }
+             
+            
 }

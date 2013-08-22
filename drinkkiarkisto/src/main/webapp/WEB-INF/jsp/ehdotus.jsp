@@ -20,10 +20,11 @@
         </c:url>
         <a href="<c:out value="${logout}"/>">logout</a>
    
-        <form method ="POST">
+        <form method ="POST" action ="http://localhost:8080/drinkkiarkisto/app/luo-drinkki-ehdotuksesta"/>>
+       <input id="id" name="id" type="hidden" value="${id}"/>
+         
             <label>Ehdotuksen nimi (pakollinen): <input type="text" name="drinkki_name" id="drinkki_name" value="${drinkki_name}"/></label><br>
-            <br>
-            <br>
+           
             <label>Drinkkisi tyyppi (cocktail, alkujuoma...): <input type="text" name="tyyppi_name" id="tyyppi_name" value="${tyyppi_name}" /></label><br>
             <br>
             <label>Pääainesosa (pakollinen):<input type="text" name="ainesosa_name" id ="ainesosa_name" value="${ainesosa_name}"/></label><br>
@@ -41,8 +42,8 @@
             <label>Ainesosa 5:<input type="text" name="ainesosa5" id ="ainesosa5" value="${ainesosa5}"/></label><br>
             <label>määrä: <input type="text" name="maara5" id ="maara5" value="${maara5}"/></label><br>
             <br>
-            <input type="submit" value ="Hyväksy" method ="POST" action ="http://localhost:8080/drinkkiarkisto/app/luo-drinkki-ehdotuksesta"/>
-            <input type="submit" value ="Hylkää" method ="POST" action ="${poista}"/>
+            <input type="submit" name ="Hyväksy" value ="Hyväksy"/>
+            <input type="submit" name ="Hylkää" value ="Hylkää" />
         </form>
         
               <p>${nameError}</P>

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.TreeMap;
 import werkko.data.Drinkki;
 import werkko.data.DrinkkiAinesosa;
+import werkko.data.DrinkkiLomake;
 import werkko.data.Lomake;
 import werkko.data.Tyyppi;
 
@@ -36,4 +37,5 @@ public interface DrinkkiServiceRajapinta<T> {
       HashMap<String, String> annaDrinkitTyypinMukaanAdmin(String tyyppi_nimi);
       TreeMap<String, String> annaDrinkitAakkosissaAdmin();
        String annaLomakeVirheenTulkinta(String errorviesti, String field);
+      
 }
