@@ -21,11 +21,11 @@
         <a href="<c:out value="${logout}"/>">logout</a>
          <p>${sana}</P>
          
-         <c:forEach var="alkio" items="${tyyppi}">
-      <p>Ainesosa: ${tyyppi.key}  Määrä: ${tyyppi.value}</P> 
-            </c:forEach>
+       
+      <p>Tyyppi: ${tyyppi} </P> 
+           
       
-        <pre>
+       
             <c:forEach var="alkio" items="${ainesosa}">
       <p>Ainesosa: ${alkio.key}  Määrä: ${alkio.value}</P> 
             </c:forEach>

@@ -7,6 +7,7 @@ package werkko.Services;
 import java.util.ArrayList;
 import java.util.List;
 import werkko.data.Ainesosa;
+import werkko.data.Drinkki;
 import werkko.data.DrinkkiAinesosa;
 import werkko.data.Lomake;
 
@@ -26,4 +27,5 @@ public interface DrinkkiAinesosaServiceRajapinta<T> {
     List<T> list();
     public ArrayList<DrinkkiAinesosa> luoDrinkinDrinkkiainesosat (Lomake lomake, ArrayList<Ainesosa> ainesosat);
     boolean onkoAinesosaDrinkkiAinesosassa(Ainesosa ainesosa);
+     int annaDrinkkiainesosanLukumaara(String id);
 }

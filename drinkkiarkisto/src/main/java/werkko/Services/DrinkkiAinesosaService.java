@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import werkko.data.Ainesosa;
+import werkko.data.Drinkki;
 import werkko.data.DrinkkiAinesosa;
 import werkko.data.Lomake;
 import werkko.repository.AinesosaRepositoryRajapinta;
@@ -86,4 +87,15 @@ public class DrinkkiAinesosaService implements DrinkkiAinesosaServiceRajapinta<D
         }
         return false;
     }
+    public int annaDrinkkiainesosanLukumaara(String id){
+         List<DrinkkiAinesosa> lista =this.list();
+         int lkm =0;
+         for(int i = 0; i<lista.size();i++){
+             if(lista.get(i).getAinesosa().getAinesosa_id().equals(id)){
+                 lkm=lkm+1;
+             }
+         }
+         return lkm;
+    }
+     
 }

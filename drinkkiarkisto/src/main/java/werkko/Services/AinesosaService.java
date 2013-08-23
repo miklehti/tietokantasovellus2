@@ -140,6 +140,15 @@ public class AinesosaService implements AinesosaServiceRajapinta<Ainesosa> {
         }
        return ainesosat;
     }
+    public   ArrayList<Ainesosa> annaDrinkinAinesosat(Drinkki drinkki){
+             List<DrinkkiAinesosa> drinkkiainesosat= drinkki.getDrinkkiAinesosa();
+             ArrayList<Ainesosa> ainesosat = new ArrayList<Ainesosa>();
+          for(int i = 0; i<drinkkiainesosat.size();i++){
+              ainesosat.add(drinkkiainesosat.get(i).getAinesosa());
+          } 
+          return ainesosat;
+         }
     
+  
 
 }

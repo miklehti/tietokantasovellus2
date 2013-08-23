@@ -28,4 +28,5 @@ public interface AinesosaServiceRajapinta<T> {
     public HashMap<String,Integer> annaAinesosatJaMaarat(Drinkki drinkki);
     Ainesosa annaAinesosaNimenPerusteella(String nimi);
     ArrayList<Ainesosa> luoDrinkinAinesosat(Lomake lomake);
+    ArrayList<Ainesosa> annaDrinkinAinesosat(Drinkki drinkki);
 }
