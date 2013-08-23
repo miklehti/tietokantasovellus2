@@ -243,7 +243,7 @@ public class DrinkkiController {
             model.addAttribute("drinkinNimi", drinkinNimi);
             model.addAttribute("sana", sana);
             model.addAttribute("ainesosa", ainesosa);
-             model.addAttribute("tyyppi", tyypit);
+            model.addAttribute("tyyppi", tyypit);
             return "drinkki";
         }
     }
@@ -471,9 +471,9 @@ public class DrinkkiController {
         } else {
             String sana = "Ehdotuksia:";
             HashMap<String, String> ehdotuksia = drinkkiservice.annaEhdotukset();
-            
-            if(ehdotuksia.isEmpty()){
-            redirectAttributes.addFlashAttribute("eiEhdotuksia", "Ei yht‰‰n ehdotusta t‰ll‰ hetkell‰");
+
+            if (ehdotuksia.isEmpty()) {
+                redirectAttributes.addFlashAttribute("eiEhdotuksia", "Ei yht‰‰n ehdotusta t‰ll‰ hetkell‰");
             }
             session.setAttribute("sana", sana);
 
@@ -746,14 +746,14 @@ public class DrinkkiController {
             BindingResult bindingResult,
             Model model,
             HttpSession session) {
-
+        Drinkki ehdotus = (Drinkki) drinkkiservice.read(id);
 
         if (onkoIstuntoVoimassa(session) == false) {
             return "redirect:login";
         } else {
 
             if (hylkaa != null) {
-                return poistaEhdotus(redirectAttributes, id, session);
+                return poistaDrinkki(redirectAttributes, id, session, ehdotus);
             } else {
                 if (drinkkilomake.getTyyppi_name().equals("ehdotus")) {
                     session.setAttribute("nameError", "tyyppi ei voi olla ehdotus");
@@ -765,7 +765,7 @@ public class DrinkkiController {
                     asetaVirheSessioon(drinkkilomake, bindingResult, session);
                     return "ehdotus";
                 }
-                Drinkki ehdotus = (Drinkki) drinkkiservice.read(id);
+
                 ArrayList<Tyyppi> tyypit = tyyppiservice.luoDrinkinTyyppi(drinkkilomake.getTyyppi_name());
                 ArrayList<Ainesosa> ainesosat = ainesosaservice.luoDrinkinAinesosat(drinkkilomake);
                 ArrayList<DrinkkiAinesosa> drinkkiainesosat = drinkkiainesosaservice.luoDrinkinDrinkkiainesosat(drinkkilomake, ainesosat);
@@ -785,16 +785,37 @@ public class DrinkkiController {
 
     }
 
-    public String poistaEhdotus(
+    public String poistaDrinkki(
             RedirectAttributes redirectAttributes,
-            String id, HttpSession session) {
+            String id, HttpSession session, Drinkki drinkki) {
 
 
         if (onkoIstuntoVoimassa(session) == false) {
             return "redirect:login";
         } else {
-           
+            //poista tyyppi jos ainut
+            HashMap<String, String> tyypinEsiintyminen = drinkkiservice.annaDrinkitTyypinMukaan(drinkki.getTyypit().get(0).getTyyppi_name());
+            if(tyypinEsiintyminen.size()==1){
+                tyyppiservice.delete(drinkki.getTyypit().get(0).getTyyppi_id());
+            }
+            //poista drinkki
             drinkkiservice.delete(id);
+            //poista drinkkiainesosat
+            List<DrinkkiAinesosa> drinkkiainesosat = drinkki.getDrinkkiAinesosa();
+            int koko = drinkkiainesosat.size();
+            for(int i = 0; i<koko; i++){
+                drinkkiainesosaservice.delete(drinkkiainesosat.get(i).getDrinkkiainesosa_id());
+            }
+            //poista ainesosat, eli jos drinkin ainesosa id ei drinkkiainesosassa voi poistaa
+           
+            List<Ainesosa> ainesosat = ainesosaservice.list();
+            int ainesosaKoko = ainesosat.size();
+            for(int i = 0; i<ainesosaKoko; i++){
+                if(drinkkiainesosaservice.onkoAinesosaDrinkkiAinesosassa(ainesosat.get(i))==false){
+                    ainesosaservice.delete(ainesosat.get(i).getAinesosa_id());
+                }
+            }
+            
             redirectAttributes.addFlashAttribute("onnistunutViesti", "Ehdotus poistettu");
             session.removeAttribute("ehdotuksia");
             return "redirect:admin";

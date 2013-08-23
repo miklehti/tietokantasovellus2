@@ -25,4 +25,5 @@ public interface DrinkkiAinesosaServiceRajapinta<T> {
 
     List<T> list();
     public ArrayList<DrinkkiAinesosa> luoDrinkinDrinkkiainesosat (Lomake lomake, ArrayList<Ainesosa> ainesosat);
+    boolean onkoAinesosaDrinkkiAinesosassa(Ainesosa ainesosa);
 }

@@ -76,4 +76,14 @@ public class DrinkkiAinesosaService implements DrinkkiAinesosaServiceRajapinta<D
         }
            return drinkkiainesosat;
     }
+    
+    public boolean onkoAinesosaDrinkkiAinesosassa(Ainesosa ainesosa){
+        List<DrinkkiAinesosa> drinkkiainesosat = list();
+        for(int i = 0; i<drinkkiainesosat.size();i++){
+            if(drinkkiainesosat.get(i).getAinesosa().getAinesosa_id().equals(ainesosa.getAinesosa_id())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
