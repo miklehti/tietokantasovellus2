@@ -90,6 +90,7 @@ public class DrinkkiService implements DrinkkiServiceRajapinta<Drinkki> {
             for (int j = 0; j < tutkittavanDrinkinTyypit.size(); j++) {
                 if (tutkittavanDrinkinTyypit.get(j).getTyyppi_name().equals("ehdotus")) {
                     lista.remove(i);
+                    listanKoko= listanKoko-1;
                 }
 
             }
